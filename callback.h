@@ -8,11 +8,11 @@
 template<class ReturnType, class Class, class... Params>
 class Callback
 {
-	// Typedef our method pointer. 
-	typedef ReturnType(Class::*Method)(Params...);
+    // Typedef our method pointer. 
+    typedef ReturnType(Class::*Method)(Params...);
 
 public:
-	// A reference to the method and any parameters that should be used when the button is clicked must be supplied thorugh the constructor. 
+    // A reference to the method and any parameters that should be used when the button is clicked must be supplied thorugh the constructor. 
     Callback(Class& class_ref, Method method, Params&... params_ref) :
         m_class(class_ref),
         m_method(method),
@@ -28,22 +28,19 @@ public:
     }
 
 
-
 private:
     Callback() {};
 
     // Invoke the stored method.
-	template<std::size_t... Is>
-	void EventNotify(const std::tuple<Params...>& tuple, std::index_sequence<Is...>)
-	{
-		(m_class.*m_method)(std::get<Is>(tuple)...);
-	}
+    template<std::size_t... Is>
+    void EventNotify(const std::tuple<Params...>& tuple, std::index_sequence<Is...>)
+    {
+        (m_class.*m_method)(std::get<Is>(tuple)...);
+    }
 
-
-	Class& m_class;
-	Method m_method;
-	std::tuple<Params...> m_params_tuple;
-
+    Class& m_class;
+    Method m_method;
+    std::tuple<Params...> m_params_tuple;
 
 };
 
